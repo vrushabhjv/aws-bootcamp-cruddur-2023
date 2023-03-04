@@ -34,6 +34,8 @@ ENV FLASK_ENV=development
 EXPOSE ${PORT}
 CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=4567"]
 ```
+Refer this [FILE](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/backend-flask/Dockerfile) for the above code. This is a `dockerfile`.
+
 Now building the container using the image created in `Dockerfile`
 ```bash
 # This is to build our image while in the backend-flask/ directory
@@ -49,9 +51,9 @@ There are multiple ways of setting them. I used the below method.
 docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-flask
 ```
 Now if we check in ports, port 4567 can be found. We will get the 404 error if we open it in browser.
-![404 Error on port 4567 Proof](assets/backend 404 error.png)
+![404 Error on port 4567 Proof](assets/backend%20404%20error.png)
 We need to append /api/activities/home to specify the endpoint(I believe). Now the 'json' code is returned.
-![]()
+![Port 4567 showing json code Proof](assets/backend%20showing%20json%20code.png)
 
 ### 2. Containerizing the Frontend
 #### Run NPM Install
@@ -61,7 +63,9 @@ cd frontend-react-js
 npm i
 ```
 To avoid doing this everytime, I have added the install npm task to 'gitpod.yml' file.
-![]()
+
+![NPM install in Gitpod.yml file proof](assets/Frontend-npn-install-in-gitpod.yml_file.png)
+
 #### Create Docker File
 I copied the following code to `Dockerfile` in `frontend-react-js` directory. I somehow with help from Google and ChatGpt managed to understand what exactly the code does and was able to relate it to the dockerfile created for backend.
 ```dockerfile
@@ -75,6 +79,8 @@ RUN npm install
 EXPOSE ${PORT}
 CMD ["npm", "start"]
 ```
+Refer this [FILE](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/frontend-react-js/Dockerfile) for the above code. This is a `dockerfile`.
+
 #### Build the image
 Build the `Dockerfile` you created into an image 
 ```bash
@@ -127,12 +133,16 @@ networks:
     driver: bridge
     name: cruddur
 ```
+See the above `docker-compose.yml` file in [THIS](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/docker-compose.yml) link.
+
 Because our volumes are mapped, if we make changes to our frontend, we would immediately see those changes.
-![]()
+
+The below scheenshot shows multiple containers running and multiple ports available.
+![Showing multiple containers Proof](assets/Showing%20multiple%20containers%20and%20ports%20running.png)
 
 ### 4. Adding Endpoint for Notifications - Using Flask for Backend 
 
-Add the notifications endpoint to the `openapi.yml` file using these contents:
+Add the notifications endpoint to the `openapi-3.0.yml` file using these contents:
 ```yaml
 #create a path using the OpenAPI extension
 /api/activities/notifications:
@@ -151,6 +161,7 @@ Add the notifications endpoint to the `openapi.yml` file using these contents:
                 items: 
                   $ref: '#/components/schemas/Activity'
 ```
+The `openapi-3.0.yml`file can be seen in this [LINK](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/backend-flask/openapi-3.0.yml)
 
 Now we need to add a route for the endpoint we created. Add these contents to the `backend-flask/app.py` file 
 ```python
@@ -162,8 +173,9 @@ def data_notifications():
   data = NotificationsActivities.run()
   return data, 200
 ```
+Add the above code in [THIS](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/backend-flask/app.py) file.
 
-Go ahead and add a `notification` file in the `backend-flask/services/` directory
+Go ahead and add a `notification_activities.py` file in the `backend-flask/services/` directory
 
 Add the following content to the created file 
 ```python
@@ -194,6 +206,7 @@ class NotificationsActivities:
     ]
     return results
 ```
+The above code is available in [THIS](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/backend-flask/services/notifications_activities.py) file.
 
 ***Most the above code is copied from /api/activities/home as it is mostly similar to what we need for notifications feature with minor changes***
 
@@ -214,6 +227,7 @@ import process from 'process';
     element: <NotificationsFeedPage />
   },
 ```
+Added the above code in [THIS](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/frontend-react-js/src/App.js) file.
 
 Now let's create a page for the feed we just created:
 In frontend-react-js/src/pages/ create `NotificationsFeedPage.js` and `NotificationsFeedPage.css`
@@ -297,8 +311,12 @@ export default function NotificationsFeedPage() {
   );
 }
 ```
+The above code is available in [THIS](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/frontend-react-js/src/pages/NotificationsFeedPage.js) file.
+
 ***This completes the frontend and backend for notifications feature***
-![]()
+
+The below screenshot shows working notifications page.
+![Working notifications page Proof](assets/Notifications%20page%20working.png)
 
 ### 6. Creating and Running DynamoDB Local 
 
@@ -319,8 +337,9 @@ To create our `dynamodb` service, add this content to the `docker-compose.yml` f
       - "./docker/dynamodb:/home/dynamodblocal/data"
     working_dir: /home/dynamodblocal
 ```
+See the above `docker-compose.yml` file in [THIS](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/docker-compose.yml) link.
 
-directory volume mapping
+Directory volume mapping
 ```
 volumes: 
 - "./docker/dynamodb:/home/dynamodblocal/data"
@@ -344,6 +363,7 @@ volumes:
   db:
     driver: local
 ```
+See the above `docker-compose.yml` file in [THIS](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/docker-compose.yml) link.
 
 To be able to intercat with the `postgres client`, we need to install the driver. And to do that, we need to add these following lines to our `gitpod.yml` file:
 ```yaml
@@ -354,6 +374,7 @@ To be able to intercat with the `postgres client`, we need to install the driver
       sudo apt update
       sudo apt install -y postgresql-client-13 libpq-dev
 ```
+See the above `gitpod.yml` file in [THIS](https://github.com/vrushabhjv/aws-bootcamp-cruddur-2023/blob/main/.gitpod.yml) link.
 
 Now to get the `postgres` installed, you could either manually run the commands above individually. Or stop `gitpod` and restart it. Either way works. 
 
