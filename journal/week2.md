@@ -7,7 +7,7 @@ Let's set up our environment in honeycomb
 
 First, I created an honeycomb account on this [LINK](ui.honeycomb.io). Then under environment, I created a new environment by name Bootcamp. Copied those API keys to set up environment variables in `Gitpod` workspace.
 
-![Bootcamp environment screenshot]()
+![Bootcamp environment screenshot](assets/Bootcamp%20environment%20screenshot.png)
 
 - Open Gitpod workspace and enter the below command
 
@@ -17,7 +17,7 @@ export HONEYCOMB_SERVICE_NAME="Cruddur"
 gp env HONEYCOMB_API_KEY=""
 gp env HONEYCOMB_SERVICE_NAME="Cruddur"
 ```
-![Gitpod image to show env vars set]()
+![Gitpod image to show env vars set](assets/Wk2-Honeycomb_api_key.png)
 
 - Add these env vars into `docker-compose.yml` file
 
@@ -66,7 +66,7 @@ RequestsInstrumentor().instrument()
 After the updates, test out your configuration by running this command:
 ` docker compose up` 
 
-![Confirm Datasets creation]()
+![Confirm Datasets creation](assets/Honeycomb%20dataset%20creation.png)
 
 Confirm that honeycomb is getting your data.
 #### 3. Working with traces/spans/attribute in Honeycomb.io
@@ -96,7 +96,7 @@ After the updates, test out your configuration by running this command:
 
 To create some spans, append this URL to your backend, `.../api/activities/home`
 
-![Image of Created Spans]()
+![Image of Created Spans](assets/Wk2-Honeycomb-spans.png)
 
 **Add Attribute to Span**
 
@@ -110,9 +110,9 @@ span.set_attribute("app.now", now.isoformat())
 span.set_attribute("app.result_length", len(results))
 ```
 
-![Image of first added attribute]()
+![Image of first added attribute](assets/Wk2-first-added-attribute.png)
 
-![Image of second added attribute]()
+![Image of second added attribute](assets/Wk2-second-attribute.png)
 
 After the updates, test out your configuration by running this command:
 ` docker compose up` 
@@ -123,16 +123,16 @@ With our previously hard-coded attributes `app.now` and `app.result_length`, let
 
 *Query 1*
 
-![Image of Query 1]()
+![Image of Query 1](assets/Wk2-Honeycomb-query-1.png)
 
 *Query 2*
 
-![Image of Query 2]()
+![Image of Query 2](assets/Wk2-Honeycomb-query-2.png)
 
 *Query 3*
 
 Latency - checks how long these requests take
-![Image of Query 3]()
+![Image of Query 3](assets/Wk2-Honeycomb-query-3.png)
 
 ### AWS X-Ray
 AWS X-Ray provides a complete view of requests as they travel through your application and filters visual data across payloads, functions, traces, services, APIs, and more with no-code and low-code motions. Read more [here](https://aws.amazon.com/xray/)
@@ -163,7 +163,7 @@ xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
 XRayMiddleware(app, xray_recorder)
 ```
 
-![Snippet of Code Configuration]()
+![Snippet of Code Configuration](assets/Wk2-x-ray-code-configuration.png)
 
 #### 2.Create sampling rule
 
@@ -223,9 +223,9 @@ After the updates, test out your configuration by running this command:
 
 Check your x-ray container logs to make sure logs were successfully sent to AWS X-ray.
 
-![Image of Container logs in terminal]()
+![Image of Container logs in terminal](assets/Wk2-X-ray-logs.png)
 
-![Image of Container logs in AWS Console]()
+![Image of Container logs in AWS Console](assets/Wk2-AWS-console-logs.png)
 
 ### CloudWatch Logs
 
@@ -322,7 +322,6 @@ Follow the instructions below to retrieve your access token from rollbar :
 - Click **Next**
 - Now, select an SDK - we will be using **Flask**
 - Select **Continue**, and you should see an integration page with instructions and your access token
-![Image of Rollbar Access Token]()
 
 **Add ACCESS_TOKEN to `docker-compose.yml` file**
 
@@ -374,7 +373,7 @@ After the updates, test out your configuration by running this command:
 ` docker compose up` 
 
 Test out the new endpoint you added by appending `/rollbar/test` to your backend URL
-![Image of Rollbar Endpoint Test]()
+![Image of Rollbar Endpoint Test](assets/Wk2-rollbar-endpoint-test.png)
 
 #### 2.Trigger an error and observe it with Rollbar
 
@@ -382,11 +381,11 @@ Let's create an error log for Rollbar.
 
 Navigate to this URL `.../api/activities/home` to view the error page 
 
-![Image of Rollbar Error page]()
+![Image of Rollbar Error page](assets/Wk2-rollbar-error-page.png)
 
 Now we should see the error message logged in your rollbar account, under "Items"
 
-![Image of Rollbar Error message]()
+![Image of Rollbar Error message](assets/Wk2-Rollbar-error-message.png)
 
 ## Extras
 
